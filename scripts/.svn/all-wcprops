@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/daisycrazync/!svn/ver/293/trunk/scripts
+END
+generate_manifest.rb
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/daisycrazync/!svn/ver/228/trunk/scripts/generate_manifest.rb
+END
+bundle.rb
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/daisycrazync/!svn/ver/228/trunk/scripts/bundle.rb
+END
+bundle.config
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/daisycrazync/!svn/ver/293/trunk/scripts/bundle.config
+END
