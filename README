@@ -1,0 +1,23 @@
+# To generate / update the bundle just run
+
+cd game
+ruby ../scripts/bundle.rb ../scripts/bundle.config . ../
+
+# The scripts/bundle.config file is where you specify which files should be bundled using paths that are relative to the game directory
+
+# The arguments to the bundle.rb command are:
+#    1: path to bundle.config
+#    2: path to the root foler ("game" in your case)
+#    3: path to the directory in which you would like to place the "bundled files" (a directory full of files for use with X-Code bundling)
+
+
+# When you run bundle.rb it will generate a built_client directory.  
+# This should NOT be checked into version control and should probably be svn ignored
+# I just don't know how to use SVN
+
+# If for some reason you just want to regen the manifest.xml but not update the bundle, you can run
+
+cd game
+ruby ../scripts/generate_manifest.rb ../scripts/bundle.config .
+
+# This also has the benefit of showing you the total filesize of all the assets in the built_client directory (the size of the bundled assets)
