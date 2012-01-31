@@ -1,23 +1,28 @@
-# To generate / update the bundle just run
+To generate / update the bundle just run:
 
-cd game
-ruby ../scripts/bundle.rb ../scripts/bundle.config . ../
+ruby sp_bundle.rb sp_bundle.config . ../
 
-# The scripts/bundle.config file is where you specify which files should be bundled using paths that are relative to the game directory
+The sp_bundle.config file is where you specify which files should be bundled using paths that are relative to the game directory
 
-# The arguments to the bundle.rb command are:
-#    1: path to bundle.config
-#    2: path to the root foler ("game" in your case)
-#    3: path to the directory in which you would like to place the "bundled files" (a directory full of files for use with X-Code bundling)
+The arguments to the ruby command are:
+  1: path to the sp_bundle.rb command
+  2: path to sp_bundle.config
+  3: path to the root folder of your Spaceport game (where your game's main .html file is)
+  4: path to the directory in which you would like to place the "built_client" directory
+        where the files are grouped before import into Xcode.  Do not check "built_client" into version control.
 
+If for some reason you just want to regenerate the manifest.xml but not update the bundle, you can just run:
 
-# When you run bundle.rb it will generate a built_client directory.  
-# This should NOT be checked into version control and should probably be svn ignored
-# I just don't know how to use SVN
+ruby sp_generate_manifest.rb sp_bundle.config .
 
-# If for some reason you just want to regen the manifest.xml but not update the bundle, you can run
+This also has the benefit of showing you the total filesize of all the assets in the built_client directory (the size of the bundled assets)
 
-cd game
-ruby ../scripts/generate_manifest.rb ../scripts/bundle.config .
+To bundle the assets into your app.  Just drag the contents of the "built_client" folder (not the folder itself) to the "Bundled_Assets" folder in Xcode.  
 
-# This also has the benefit of showing you the total filesize of all the assets in the built_client directory (the size of the bundled assets)
+You will then see an options dialog appear.  Ensure the following settings are correct:
+
+- "Copy items into destination group's folder (if needed)" is UNCHECKED
+- "Create folder references for any added folders" is SELECTED
+- All targets are SELECTED
+
+Be sure to do a clean build whenever files are REMOVED from the bundle.
