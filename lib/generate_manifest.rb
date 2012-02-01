@@ -18,19 +18,19 @@ def generate_manifest
   opts = OptionParser.new do |opts|
     opts.banner ="Usage: This will create two output files; a manifest.xml, and a full_asset_list.txt"
     opts.on( "-c", "--config CONFIG", "Path to your config file" ) do |path|
-      options[:bundlePath] = path
+      options[:bundle_config_path] = path
     end 
   
     opts.on("-o", "--output OUTPUT", "Directory you would like the two output files to go to") do |path|
-      options[:output_dir] = path
+      options[:manifest_output_dir] = path
     end
   
   end
 
   opts.parse!
 
-  bundlePath = options[:bundlePath]
-  output_dir = options[:output_dir]
+  bundlePath = options[:bundle_config_path] || spaceport_options[:bundle_config_path]
+  output_dir = options[:manifest_output_dir] || spaceport_options[:manifest_output_dir]
 
   if ( !bundlePath || !output_dir )
     puts opts
@@ -134,6 +134,7 @@ def generate_manifest
     total_size = file_list.inject(0){|sum,x|  sum + x[:filesize].to_i}
     puts (total_size / 1024).to_s + " KB" 
     puts (total_size / (1024*1024)).to_s  + " MB" 
+    total_size
   end
 
   def print_size_information( file_list )
@@ -152,9 +153,25 @@ def generate_manifest
       puts ""
     end
     puts "Total"
-    get_total_size( file_list );
+    total_file_size = get_total_size( file_list )/( 1024 * 1024 );
     puts ""
+    
+    file_sizes_hsh = {}
+
+    file_extensions.keys.each do |ext|
+      file_size = get_total_size( file_extensions[ ext]  )/(1024*1024)
+      file_sizes_hsh[ ext + "(" + file_size.to_s + "MB)"] = file_size
+    end
+    
+    puts "http://chart.apis.google.com/chart?chs=800x225&cht=p&chd=t:#{file_sizes_hsh.values.join(',')}&chdl=#{file_sizes_hsh.keys.join('|')}&chl=#{file_sizes_hsh.keys.join('|')}&chtt=Disk+Usage(#{total_file_size}+MB)"
+
   end
+  
+  
+
+
+  
+
 
 
   print_size_information( file_list )

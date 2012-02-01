@@ -17,27 +17,28 @@ def bundle
     end
   
     opts.on("-m", "--manifest MANIFEST_DIR", "Directory you would like the manifest to go to") do |path|
-      options[:manifest_dir] = path
+      options[:manifest_output_dir] = path
     end
   
   end
 
   opts.parse!
 
-  bundle_config_path = options[:bundle_config_path]
-  bundle_dir = options[:bundle_dir]
-  manifest_output_dir = options[:manifest_output_dir]
+  bundle_config_path = options[:bundle_config_path] || spaceport_options[:bundle_config_path]
+  bundle_dir = options[:bundle_dir] ||  spaceport_options[:bundle_dir]
+  manifest_output_dir = options[:manifest_output_dir] || spaceport_options[:manifest_output_dir]
 
-  if ( !bundle_dir || !output_dir || !bundle_config_path)  
+  if ( !bundle_dir || !manifest_output_dir || !bundle_config_path)  
     bundle_config_path = ARGV[0]
     manifest_output_dir = ARGV[1]
     bundle_dir = ARGV[2]
     puts "You are using this in the deprecated way! Please do not"
+    exit
   end
 
 
   current_dir = File.expand_path(File.dirname(__FILE__))
-  built_client_dir = File.join(bundle_dir, "built_client")
+  built_client_dir = File.join(bundle_dir, "assets")
   manifest_generating_script_path = File.join(current_dir, "sp_generate_manifest.rb")
   full_asset_list_path = File.join(manifest_output_dir, "full_asset_list.txt")
   manifest_path = File.join(manifest_output_dir, "manifest.xml")

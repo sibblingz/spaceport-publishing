@@ -1,3 +1,10 @@
+To install run these three commands:
+	bundle install
+	rake build
+	rake install
+
+
+
 To generate / update the bundle just run:
 
 ruby sp_bundle.rb sp_bundle.config . ../
