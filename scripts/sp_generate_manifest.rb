@@ -1,7 +1,31 @@
-bundlePath = ARGV[0]
-output_dir = ARGV[1]
+#!/usr/bin/env ruby
+require 'optparse'
 
-puts bundlePath;
+
+# bundlePath = ARGV[0]
+# output_dir = ARGV[1]
+options = {}
+opts = OptionParser.new do |opts|
+  opts.banner ="Usage: This will create two output files; a manifest.xml, and a full_asset_list.txt"
+  opts.on( "-c", "--config CONFIG", "Path to your config file" ) do |path|
+    options[:bundlePath] = path
+  end 
+  
+  opts.on("-o", "--output OUTPUT", "Directory you would like the two output files to go to") do |path|
+    options[:output_dir] = path
+  end
+  
+end
+
+opts.parse!
+
+bundlePath = options[:bundlePath]
+output_dir = options[:output_dir]
+
+if ( !bundlePath || !output_dir )
+  puts opts
+  exit
+end
 
 wants = []
 doNotWants = []
@@ -69,7 +93,7 @@ def get_cksum( filename )
 end
 
 def get_svn_revision( filename )
-  `svn info -- #{filename}  | grep "Last Changed Rev" | awk '-F: ' '{ print $2 }'`.strip
+ `svn info -- '#{filename}'  | grep "Last Changed Rev" | awk '-F: ' '{ print $2 }'`.strip
 end
 
 def get_git_revision( filename )
@@ -101,10 +125,35 @@ file_list = file_list.map do |filename|
   end
 end.compact
 
+def get_total_size( file_list )
 
-total_size = file_list.inject(0){|sum,x|  sum + x[:filesize].to_i}
-puts (total_size / 1024).to_s + " KB" 
-puts (total_size / (1024*1024)).to_s  + " MB" 
+  total_size = file_list.inject(0){|sum,x|  sum + x[:filesize].to_i}
+  puts (total_size / 1024).to_s + " KB" 
+  puts (total_size / (1024*1024)).to_s  + " MB" 
+end
+
+def print_size_information( file_list )
+
+
+  file_extensions ={}
+  file_list.each do |a| 
+    ext = File.extname( a[:name] ) 
+    file_extensions[ ext ] = file_extensions[ ext ] || []
+    file_extensions[ext].push(a)
+  end
+
+  file_extensions.keys.each do |ext|
+    puts ext
+    get_total_size( file_extensions[ ext]  )
+    puts ""
+  end
+  puts "Total"
+  get_total_size( file_list );
+  puts ""
+end
+
+
+print_size_information( file_list )
 
 xml_file_list = file_list.map do |value|
   "\t<file " + value.map {|k,v| k.to_s + "=\"#{v}\"" }.join(" ") + "/>"
