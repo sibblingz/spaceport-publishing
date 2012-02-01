@@ -10,7 +10,6 @@ else
 end
 
 def generate_manifest
-  
 
   # bundlePath = ARGV[0]
   # output_dir = ARGV[1]

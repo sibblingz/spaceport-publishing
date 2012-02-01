@@ -12,4 +12,6 @@ if (!ARGV[0])
   exit
 end
 command = ARGV[0].intern
+
+puts spaceport_options
 send( command )
