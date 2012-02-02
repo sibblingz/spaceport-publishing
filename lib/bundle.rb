@@ -20,6 +20,9 @@ def bundle
       options[:manifest_output_dir] = path
     end
   
+    opts.on("--no-manifest" "Do not generate a manifest or fuller_asset_list") do |value|
+      options[:no_manifest] = true
+    end
   end
 
   opts.parse!
@@ -43,12 +46,13 @@ def bundle
   full_asset_list_path = File.join(manifest_output_dir, "full_asset_list.txt")
   manifest_path = File.join(manifest_output_dir, "manifest.xml")
 
-
-  `spaceport generate_manifest --config #{bundle_config_path} --output #{manifest_output_dir}`
+  if ( !options[:no_manifest] )
+    puts `spaceport generate_manifest --config #{bundle_config_path} --output #{manifest_output_dir}`
+  end
   `rm -rf #{built_client_dir}`
   `mkdir -p #{built_client_dir}`
 
-  `rsync -rvmL --exclude='#{built_client_dir}/*' --include-from=#{full_asset_list_path}  --exclude='*.*' #{manifest_output_dir} #{built_client_dir}`
+  `rsync -rvmL --exclude='#{built_client_dir}/*' --include-from=#{full_asset_list_path}  --exclude='*.*' #{manifest_output_dir}/ #{built_client_dir}`
   `cp #{manifest_path} #{built_client_dir}`
 
   # TODO:

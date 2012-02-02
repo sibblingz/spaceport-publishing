@@ -31,6 +31,8 @@ def generate_manifest
   bundlePath = options[:bundle_config_path] || spaceport_options[:bundle_config_path]
   output_dir = options[:manifest_output_dir] || spaceport_options[:manifest_output_dir]
 
+  app_root_dir = output_dir
+
   if ( !bundlePath || !output_dir )
     puts opts
     exit
@@ -66,6 +68,10 @@ def generate_manifest
 			
   	end
   end
+  
+  original_dir = Dir.pwd
+  Dir.chdir( app_root_dir )
+
 
   wants.each do |w|
   	Dir.glob( w[:path] ) do |filename|
@@ -193,6 +199,9 @@ def generate_manifest
 
   output = prefix + xml_file_list.join("\n") + suffix
 
+
+  Dir.chdir( original_dir )
+  
   File.open( File.join(output_dir, "manifest.xml"), 'w' ) do |file|
     file.write( output )
   end
@@ -207,4 +216,8 @@ def generate_manifest
       end
     end.join("\n") )
   end
+
+
+  
 end
+
