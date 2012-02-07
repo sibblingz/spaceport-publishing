@@ -52,7 +52,7 @@ def bundle
   `rm -rf #{built_client_dir}`
   `mkdir -p #{built_client_dir}`
 
-  `rsync -rvmL --exclude='#{built_client_dir}/*' --include-from=#{full_asset_list_path}  --exclude='*.*' #{manifest_output_dir}/ #{built_client_dir}`
+  `rsync -rvmL --exclude='#{built_client_dir}/*' --include-from=#{full_asset_list_path} --include='*/'  --exclude='*' #{manifest_output_dir}/ #{built_client_dir}`
   `cp #{manifest_path} #{built_client_dir}`
 
   # TODO:
