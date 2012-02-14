@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 require 'optparse'
 
-
-# Daniels Code
 if `which md5`==""
  	MD5_COMMMAND = "md5sum"
 else
@@ -172,12 +170,6 @@ def generate_manifest
 
   end
   
-  
-
-
-  
-
-
 
   print_size_information( file_list )
 
