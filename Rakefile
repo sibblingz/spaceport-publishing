@@ -15,7 +15,7 @@ Jeweler::Tasks.new do |gem|
   gem.name = "spaceport"
   gem.homepage = "http://github.com/sibblingz/spaceport-publisher"
   gem.license = "ALL OF THEM"
-  gem.summary = %Q{The tools necessary for spaceport not to suck}
+  gem.summary = %Q{Bundling tool for spaceport}
   gem.description = %Q{Seriously, this thing is great}
   gem.email = "daniel@sibblingz.com"
   gem.authors = ["djacobs7"]
