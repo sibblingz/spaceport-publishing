@@ -1,4 +1,4 @@
-To install run these three commands:
+To install run these commands:
   sudo gem install bundle
 	bundle install
 	rake build
