@@ -27,7 +27,8 @@ Gem::Specification.new do |s|
     "lib/bundle.rb",
     "lib/generate_manifest.rb",
     "lib/lib.rb",
-    "lib/server.rb"
+    "lib/server.rb",
+    "spaceport.gemspec"
   ]
   s.homepage = %q{http://github.com/sibblingz/spaceport-publisher}
   s.licenses = ["ALL OF THEM"]
