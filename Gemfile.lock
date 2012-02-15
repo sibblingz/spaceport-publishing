@@ -20,3 +20,4 @@ DEPENDENCIES
   OptionParser
   bundler
   jeweler
+  json
