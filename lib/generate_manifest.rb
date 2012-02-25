@@ -171,25 +171,70 @@ def generate_manifest
   end
   
 
-  print_size_information( file_list )
-
-  xml_file_list = file_list.map do |value|
-    "\t<file " + value.map {|k,v| k.to_s + "=\"#{v}\"" }.join(" ") + "/>"
+  def generate_manifest_3_3( file_list )
+    prefix = <<-eos
+<?xml version="1.0" encoding="utf-8"?>
+<manifest version="THIS_DOES_NOTHING" platform="3.3">
+    eos
+    
+    plugins = <<-eos
+  <plugins>
+    <entry id="io.spaceport.plugins.facebook" version="3.3.0"/>
+    <entry id="io.spaceport.plugins.flurry" version="3.3.0"/>
+    <entry id="io.spaceport.plugins.localnotifications" version="3.3.0"/>
+    <entry id="io.spaceport.plugins.market" version="3.3.0"/>
+    <entry id="io.spaceport.plugins.remotenotifications" version="3.3.0"/>
+    <entry id="io.spaceport.plugins.tapjoy" version="3.3.0"/>
+    <entry id="io.spaceport.plugins.twitter" version="3.3.0"/>
+  </plugins>
+    eos
+    
+    xml_file_list = file_list.map do |_value|
+      value = _value.dup
+      value[:id] = value[:name]
+      value.delete(:name)
+      "\t<entry " + value.map {|k,v| k.to_s + "=\"#{v}\"" }.join(" ") + "/>"
+    end
+    
+    startup = <<-eos
+  <startup>
+    #{xml_file_list.join("\n")}
+  </startup>
+eos
+    
+    suffix = <<-eos
+  <code></code>
+  <assets></assets>
+  </manifest>
+eos
+    
+    output = prefix + plugins + startup + suffix
   end
 
-  prefix = <<-eos
-  <?xml version="1.0" encoding="utf-8"?>
-  <manifest version="3.02">
-  <files>
-  eos
+  def generate_manifest_3_02( file_list )
+    xml_file_list = file_list.map do |value|
+      "\t<file " + value.map {|k,v| k.to_s + "=\"#{v}\"" }.join(" ") + "/>"
+    end
 
-  suffix = <<-eos
+    prefix = <<-eos
+    <?xml version="1.0" encoding="utf-8"?>
+    <manifest version="3.02">
+    <files>
+    eos
 
-  </files>
-  </manifest>
-  eos
+    suffix = <<-eos
 
-  output = prefix + xml_file_list.join("\n") + suffix
+    </files>
+    </manifest>
+    eos
+
+    output = prefix + xml_file_list.join("\n") + suffix
+    output
+  end
+
+  print_size_information( file_list )
+  
+  output = generate_manifest_3_3( file_list )
 
 
   Dir.chdir( original_dir )
