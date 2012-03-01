@@ -179,13 +179,10 @@ def generate_manifest
     
     plugins = <<-eos
   <plugins>
-    <entry id="io.spaceport.plugins.facebook" version="3.3.0"/>
+    <entry id="io.spaceport.plugins.chartboost" version="3.3.0"/>
     <entry id="io.spaceport.plugins.flurry" version="3.3.0"/>
-    <entry id="io.spaceport.plugins.localnotifications" version="3.3.0"/>
     <entry id="io.spaceport.plugins.market" version="3.3.0"/>
-    <entry id="io.spaceport.plugins.remotenotifications" version="3.3.0"/>
     <entry id="io.spaceport.plugins.tapjoy" version="3.3.0"/>
-    <entry id="io.spaceport.plugins.twitter" version="3.3.0"/>
   </plugins>
     eos
     
