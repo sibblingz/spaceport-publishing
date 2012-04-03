@@ -19,7 +19,7 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{Seriously, this thing is great}
   gem.email = "daniel@sibblingz.com"
   gem.authors = ["djacobs7"]
-  gem.version = "3.3"
+  gem.version = "3.3.1"
   
   # dependencies defined in Gemfile
 end
