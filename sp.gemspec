@@ -4,15 +4,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{sp}
+  s.name = "sp"
   s.version = "3.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["djacobs7"]
-  s.date = %q{2012-04-03}
-  s.default_executable = %q{spaceport}
-  s.description = %q{Seriously, this thing is great}
-  s.email = %q{daniel@sibblingz.com}
+  s.date = "2012-04-03"
+  s.description = "Seriously, this thing is great"
+  s.email = "daniel@sibblingz.com"
   s.executables = ["spaceport"]
   s.extra_rdoc_files = [
     "README"
@@ -30,11 +29,11 @@ Gem::Specification.new do |s|
     "lib/server.rb",
     "sp.gemspec"
   ]
-  s.homepage = %q{http://github.com/sibblingz/spaceport-publisher}
+  s.homepage = "http://github.com/sibblingz/spaceport-publisher"
   s.licenses = ["ALL OF THEM"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.6.2}
-  s.summary = %q{Bundling tool for spaceport}
+  s.rubygems_version = "1.8.21"
+  s.summary = "Bundling tool for spaceport"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
