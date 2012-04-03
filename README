@@ -1,8 +1,23 @@
-To install run these commands:
+Installation
+===========
+As a 3rd party developer, just  "sudo gem install sp"
+
+Usage
+=====
+[[TODO: finish these docs]]
+You can then run
+spaceport bundle -c [path to .config file] -o [ path where you would like your bundle ] -m [ path to root of your server ]
+
+
+Development
+===========
+
+If you would like to actually modify this plugin
+To build ( and install ) run these commands:
   sudo gem install bundle
 	bundle install
 	rake build
 	sudo rake install
 
-You can then run
-spaceport bundle -c [path to .config file] -o [ path where you would like your bundle ] -m [ path to root of your server ]
+
+
