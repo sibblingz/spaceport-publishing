@@ -21,17 +21,20 @@ def generate_manifest
     opts.on("-o", "--output OUTPUT", "Directory you would like the two output files to go to") do |path|
       options[:manifest_output_dir] = path
     end
+    
+    opts.on("-a", "--app_root APPLICATION_ROOT", "Directory that is the root of your application server") do |path|
+      options[:application_root] = path
+    end
   
   end
 
   opts.parse!
 
   bundlePath = options[:bundle_config_path] || spaceport_options[:bundle_config_path]
-  output_dir = options[:manifest_output_dir] || spaceport_options[:manifest_output_dir]
+  app_root_dir = options[:application_root] || spaceport_options[:application_root] 
+  output_dir = options[:manifest_output_dir] || spaceport_options[:manifest_output_dir] || app_root_dir
 
-  app_root_dir = output_dir
-
-  if ( !bundlePath || !output_dir )
+  if ( !bundlePath || !app_root_dir || !output_dir  )
     puts opts
     exit
   end
@@ -60,6 +63,7 @@ def generate_manifest
   		end
 		
   		matchData = /^([^\s]*)[\s]*([^\s]*)/.match(line)
+
   		if( matchData )
   			wants.push( {:path => matchData[1], :version => matchData[2]})
   		end 
@@ -93,7 +97,7 @@ def generate_manifest
 
   def get_cksum( filename )
   	if MD5_COMMMAND=="md5"
-  		`#{MD5_COMMMAND} #{filename} | awk '-F= ' '{ print $2 }'`.strip
+  		`#{MD5_COMMMAND} "#{filename}" | awk '-F= ' '{ print $2 }'`.strip
   	elsif MD5_COMMMAND=="md5sum"
   		`#{MD5_COMMMAND} #{filename}`.split("  ")[0].strip
   	end
