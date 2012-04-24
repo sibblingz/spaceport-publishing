@@ -19,7 +19,7 @@ def generate_manifest
     end 
   
     opts.on("-o", "--output OUTPUT", "Directory you would like the two output files to go to") do |path|
-      options[:manifest_output_dir] = path
+      options[:output_dir] = path
     end
     
     opts.on("-a", "--app_root APPLICATION_ROOT", "Directory that is the root of your application server") do |path|
@@ -30,50 +30,37 @@ def generate_manifest
 
   opts.parse!
 
-  bundlePath = options[:bundle_config_path] || spaceport_options[:bundle_config_path]
-  app_root_dir = options[:application_root] || spaceport_options[:application_root] 
-  output_dir = options[:manifest_output_dir] || spaceport_options[:manifest_output_dir] || app_root_dir
+  bundlePath = options[:bundle_config_path]
+  app_root_dir = options[:application_root]
+  output_dir = options[:output_dir]
 
-  if ( !bundlePath || !app_root_dir || !output_dir  )
+  if ( !bundlePath  )
+    puts "please specify a bundle.config"
     puts opts
     exit
   end
 
-  wants = []
-  doNotWants = []
   completeFileList = {}
+  
+  parsedResults = parse( bundlePath )
+  
+  
+  wants = parsedResults[:wants]
+  doNotWants = parsedResults[:doNotWants]
+  plugins = parsedResults[:plugins]
+  app_root_dir = app_root_dir || parsedResults[:app_root_dir]
+  output_dir = output_dir || parsedResults[:output_dir]
+  
 
-  File.open(bundlePath, "r") do |f|
-  	while !f.eof?
-  		line = f.readline
-  		matchData = /^\s#(.*)$/.match(line)
-  		if matchData
-  			next
-  		end
-
-  		matchData = /^\s*$/.match(line)
-  		if( matchData )
-  			next
-  		end
-		
-  		matchData = /^-([^\s]*)/.match(line)
-  		if matchData
-  			doNotWants.push( {:path => matchData[1]})
-  			next;
-  		end
-		
-  		matchData = /^([^\s]*)[\s]*([^\s]*)/.match(line)
-
-  		if( matchData )
-  			wants.push( {:path => matchData[1], :version => matchData[2]})
-  		end 
-			
-  	end
+  
+  if (!app_root_dir || !output_dir  )
+    puts "please specify an APP_ROOT and OUTPUT_DIR"
+    puts opts
+    exit
   end
   
   original_dir = Dir.pwd
   Dir.chdir( app_root_dir )
-
 
   wants.each do |w|
   	Dir.glob( w[:path] ) do |filename|
@@ -175,27 +162,16 @@ def generate_manifest
   end
   
 
-  def generate_manifest_3_3( file_list )
+  def generate_manifest_3_3( file_list, plugins )
     prefix = <<-eos
 <?xml version="1.0" encoding="utf-8"?>
 <manifest version="THIS_DOES_NOTHING" platform="3.3">
     eos
     
-    plugins = <<-eos
-  <plugins>
-    <entry id="io.spaceport.plugins.chartboost" version="3.3.0"/>
-    <entry id="io.spaceport.plugins.facebook" version="3.3.0"/>
-    <entry id="io.spaceport.plugins.flurry" version="3.3.0"/>
-    <entry id="io.spaceport.plugins.localnotifications" version="3.3.0"/>
-    <entry id="io.spaceport.plugins.mail" version="3.3.0"/>
-    <entry id="io.spaceport.plugins.market" version="3.3.0"/>
-    <entry id="io.spaceport.plugins.remotenotifications" version="3.3.0"/>
-    <entry id="io.spaceport.plugins.sms" version="3.3.0"/>
-    <entry id="io.spaceport.plugins.tapjoy" version="3.3.0"/>
-    <entry id="io.spaceport.plugins.twitter" version="3.3.0"/>
-    <entry id="io.spaceport.plugins.particle" version="3.3.0"/>
-  </plugins>
-    eos
+    plugins = "<plugins>\n" + plugins.map do |plugin|
+      "\t<entry id=\"#{plugin[:id]}\" version=\"#{plugin[:version]}\"/>"
+    end.join("\n") + "\n</plugins>\n"
+
     
     xml_file_list = file_list.map do |_value|
       value = _value.dup
@@ -205,15 +181,15 @@ def generate_manifest
     end
     
     startup = <<-eos
-  <startup>
-    #{xml_file_list.join("\n")}
-  </startup>
+<startup>
+#{xml_file_list.join("\n")}
+</startup>
 eos
     
     suffix = <<-eos
-  <code></code>
-  <assets></assets>
-  </manifest>
+<code></code>
+<assets></assets>
+</manifest>
 eos
     
     output = prefix + plugins + startup + suffix
@@ -242,7 +218,7 @@ eos
 
   print_size_information( file_list )
   
-  output = generate_manifest_3_3( file_list )
+  output = generate_manifest_3_3( file_list, plugins )
 
 
   Dir.chdir( original_dir )

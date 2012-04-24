@@ -12,8 +12,8 @@ def bundle
       options[:bundle_config_path] = path
     end 
 
-    opts.on("-o", "--output BUNDLE_DIR", "Directory you would like bundle to go to") do |path|
-      options[:bundle_dir] = path
+    opts.on("-o", "--output OUTPUT_DIR", "Directory you would like bundle to go to") do |path|
+      options[:output_dir] = path
     end
   
     opts.on("-m", "--manifest MANIFEST_DIR", "Directory you would like the manifest to go to") do |path|
@@ -32,32 +32,40 @@ def bundle
 
   opts.parse!
 
-  bundle_config_path = options[:bundle_config_path] || spaceport_options[:bundle_config_path]
-  bundle_dir = options[:bundle_dir] ||  spaceport_options[:bundle_dir]
-  app_root_dir = options[:application_root] || spaceport_options[:application_root] 
-  manifest_output_dir = options[:manifest_output_dir] || spaceport_options[:manifest_output_dir] || app_root_dir
 
-  if ( !bundle_dir || !app_root_dir || !manifest_output_dir || !bundle_config_path)  
+
+  bundle_config_path = options[:bundle_config_path] || spaceport_options[:bundle_config_path]
+  parsedResults = parse( bundle_config_path )
+  
+  app_root_dir =  options[:application_root] || parsedResults[:app_root_dir]
+  output_dir =options[:output_dir] || parsedResults[:output_dir] 
+
+  #manifest_output_dir = options[:manifest_output_dir]  || output_dir
+
+
+
+
+  if ( !output_dir || !app_root_dir || !bundle_config_path)  
     puts opts
     exit
   end
 
 
   current_dir = File.expand_path(File.dirname(__FILE__))
-  built_client_dir = File.join(bundle_dir, "built_client", "assets")
+  built_client_dir = File.join(output_dir, "built_client", "assets")
   manifest_generating_script_path = File.join(current_dir, "generate_manifest.rb")
-  full_asset_list_path = File.join(manifest_output_dir, "full_asset_list.txt")
-  manifest_path = File.join(manifest_output_dir, "manifest.xml")
+  full_asset_list_path = File.join(output_dir, "full_asset_list.txt")
 
-  if ( !options[:no_manifest] )
-    puts "spaceport generate_manifest --config #{bundle_config_path} -a #{app_root_dir} --output #{manifest_output_dir}"
-    puts `spaceport generate_manifest --config #{bundle_config_path} -a #{app_root_dir} --output #{manifest_output_dir}`
-  end
+
   `rm -rf #{built_client_dir}`
   `mkdir -p #{built_client_dir}`
 
-  `rsync -rvmL --exclude='#{built_client_dir}/*' --include-from=#{full_asset_list_path} --include='*/'  --exclude='*' #{manifest_output_dir}/ #{built_client_dir}`
-  `cp #{manifest_path} #{built_client_dir}`
+  if ( !options[:no_manifest] )
+    puts "spaceport generate_manifest --config #{bundle_config_path} -a #{app_root_dir} --output #{output_dir}"
+    puts `#{SPACEPORT_BIN_PATH} generate_manifest --config #{bundle_config_path} -a #{app_root_dir} --output #{built_client_dir}`
+  end
+
+  `rsync -rvmL --exclude='#{built_client_dir}/*' --include-from=#{full_asset_list_path} --include='*/'  --exclude='*' #{app_root_dir}/ #{built_client_dir}`
 
   # TODO:
   # Zip stuff up for Android

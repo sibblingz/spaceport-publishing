@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest version="THIS_DOES_NOTHING" platform="3.3">
+<plugins>
+	<entry id="io.spaceport.plugins.chartboost" version="3.3.0"/>
+	<entry id="io.spaceport.plugins.mail" version="3.3.0"/>
+	<entry id="io.spaceport.plugins.facebook" version="3.3.0"/>
+	<entry id="io.spaceport.plugins.flurry" version="3.3.0"/>
+</plugins>
+<startup>
+	<entry version="d41d8cd98f00b204e9800998ecf8427e" filesize="0" id="human_male.png"/>
+	<entry version="d41d8cd98f00b204e9800998ecf8427e" filesize="0" id="human_male.png?game=1.2&male=1&roler=1&ver=1"/>
+</startup>
+<code></code>
+<assets></assets>
+</manifest>

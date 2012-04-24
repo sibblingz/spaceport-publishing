@@ -1,0 +1,2 @@
+human_male.png
+human_male.png?game=1.2&male=1&roler=1&ver=1

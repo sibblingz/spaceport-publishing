@@ -1,11 +1,14 @@
 #!/usr/bin/env ruby
 
+
+SPACEPORT_BIN_PATH = __FILE__
 lib_path =  File.join( File.dirname(__FILE__), "../lib" )
 
 require( File.join( lib_path, "lib.rb") ) 
 Dir.glob( File.join( lib_path, "**/*.rb" ) ).each do | file |
   require(file)
 end
+
 
 if (!ARGV[0])
   puts 'ERROR: You need to enter in a valid command'
