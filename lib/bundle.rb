@@ -44,7 +44,7 @@ def bundle
 
 
   current_dir = File.expand_path(File.dirname(__FILE__))
-  built_client_dir = File.join(bundle_dir, "assets")
+  built_client_dir = File.join(bundle_dir, "built_client", "assets")
   manifest_generating_script_path = File.join(current_dir, "generate_manifest.rb")
   full_asset_list_path = File.join(manifest_output_dir, "full_asset_list.txt")
   manifest_path = File.join(manifest_output_dir, "manifest.xml")
