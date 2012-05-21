@@ -42,6 +42,11 @@ end
 #   test.rcov_opts << '--exclude "gems/*"'
 # end
 
+
+task :ocra do 
+  `ocra --gemfile Gemfile --gem-full --output spaceport-publishing.exe bin/spaceport`
+end
+
 task :default => :test
 
 # require 'releasy'
