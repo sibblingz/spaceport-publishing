@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'optparse'
-
+require 'fileutils'
 def bundle
   # bundlePath = ARGV[0]
   # output_dir = ARGV[1]
@@ -61,15 +61,22 @@ def bundle
   built_client_dir = File.join(output_dir, "built_client", "assets")
   full_asset_list_path = File.join(output_dir, "full_asset_list.txt")
 
-  `rm -rf #{built_client_dir}`
-  `mkdir -p #{built_client_dir}`
+  FileUtils.rm_rf( built_client_dir )
+  FileUtils.mkdir_p( built_client_dir )
 
   if ( !options[:no_manifest] )
     puts "spaceport generate_manifest --config #{bundle_config_path} -a #{app_root_dir} --output #{output_dir}"
     puts `#{SPACEPORT_BIN_PATH} generate_manifest --config #{bundle_config_path} -a #{app_root_dir} --output #{built_client_dir}`
   end
 
-  `rsync -rvmL --exclude='#{built_client_dir}/*' --include-from=#{full_asset_list_path} --include='*/'  --exclude='*' #{app_root_dir}/ #{built_client_dir}`
+
+  File.open( full_asset_list_path ) do |file|
+    file.each do |line|
+      dir = File.join(  built_client_dir, File.dirname( line ) )
+      FileUtils.mkdir_p( dir )
+      FileUtils.cp( file, dir )
+    end
+  end
 
   # TODO:
   # Zip stuff up for Android

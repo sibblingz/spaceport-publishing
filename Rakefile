@@ -1,6 +1,8 @@
 
 require 'rubygems'
 require 'bundler'
+
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -41,3 +43,29 @@ end
 # end
 
 task :default => :test
+
+# require 'releasy'
+# Releasy::Project.new do
+#   name "Spaceport"
+#   version "0.0.1"
+#   
+#   executable "bin/spaceport"
+#   files "lib/**/*rb"
+#   
+#   #dont include japanese characters...
+#   exclude_encoding
+#   
+#   add_build :osx_app do
+#     url "com.spaceport.bundling"
+#     wrapper "media/gosu-mac-wrapper-0.7.41.tar.gz"
+#   end
+#   
+#   
+#   add_build :windows_standalone do
+#     add_package :zip
+#   end
+#   #  add_build :windows_wrapped do
+#   #   exclude_tcl_tk # Assuming application doesn't use Tcl/Tk, then it can save a lot of size by using this.
+#   #   add_package :zip
+#   # end
+# end

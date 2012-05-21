@@ -1,11 +1,6 @@
 #!/usr/bin/env ruby
 require 'optparse'
-
-if `which md5`==""
- 	MD5_COMMMAND = "md5sum"
-else
- 	MD5_COMMMAND = "md5"
-end
+require 'digest'
 
 def generate_manifest
 
@@ -83,11 +78,7 @@ def generate_manifest
 
 
   def get_cksum( filename )
-  	if MD5_COMMMAND=="md5"
-  		`#{MD5_COMMMAND} "#{filename}" | awk '-F= ' '{ print $2 }'`.strip
-  	elsif MD5_COMMMAND=="md5sum"
-  		`#{MD5_COMMMAND} #{filename}`.split("  ")[0].strip
-  	end
+    Digest::MD5.file( filename )
   end
 
   def get_svn_revision( filename )
