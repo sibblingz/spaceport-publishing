@@ -21,3 +21,18 @@ To build ( and install ) run these commands:
 
 
 
+
+Building for Windows
+====================
+God help you.  Give up now. 
+
+These are instructions if you ever need to build the spaceport publishing executable
+First download ruby for windows:
+http://rubyinstaller.org/
+Then download the ruby devkit.  This is for building gems that have a native component ( like the json gem ):
+http://rubyinstaller.org/add-ons/devkit/
+
+Then do this.  You must do this on a windows machine:
+gem install ocra
+remove entire development section from gemfile
+ocra --add-all-core --gemfile Gemfile --gem-full --output spaceport-publishing.exe bin/spaceport
