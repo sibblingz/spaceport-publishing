@@ -14,7 +14,10 @@ if (!ARGV[0])
   puts 'ERROR: You need to enter in a valid command'
   exit
 end
-command = ARGV[0].intern
 
+command = ARGV[0].intern
 puts spaceport_options
-send( command )
+
+if ( command.to_s.match(/generate_manifest|bundle/) )
+  send( command )
+end

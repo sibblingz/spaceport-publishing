@@ -37,8 +37,16 @@ def bundle
   bundle_config_path = options[:bundle_config_path] || spaceport_options[:bundle_config_path]
   parsedResults = parse( bundle_config_path )
   
+  
+
+
   app_root_dir =  options[:application_root] || parsedResults[:app_root_dir]
-  output_dir =options[:output_dir] || parsedResults[:output_dir] 
+  output_dir = options[:output_dir] || parsedResults[:output_dir] 
+
+  #everything is relative to location of bundle file
+  root_dir = File.dirname( bundle_config_path )  
+  app_root_dir = File.join( root_dir, app_root_dir )
+  output_dir = File.join( root_dir, output_dir )
 
   #manifest_output_dir = options[:manifest_output_dir]  || output_dir
 
@@ -50,12 +58,8 @@ def bundle
     exit
   end
 
-
-  current_dir = File.expand_path(File.dirname(__FILE__))
   built_client_dir = File.join(output_dir, "built_client", "assets")
-  manifest_generating_script_path = File.join(current_dir, "generate_manifest.rb")
   full_asset_list_path = File.join(output_dir, "full_asset_list.txt")
-
 
   `rm -rf #{built_client_dir}`
   `mkdir -p #{built_client_dir}`
