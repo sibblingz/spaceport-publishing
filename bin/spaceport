@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 
-
 SPACEPORT_BIN_PATH = __FILE__
-lib_path =  File.join( File.dirname(__FILE__), "../lib" )
+lib_path =  File.join( File.dirname(File.expand_path(__FILE__)), "../lib" )
 
 require( File.join( lib_path, "lib.rb") ) 
 Dir.glob( File.join( lib_path, "**/*.rb" ) ).each do | file |

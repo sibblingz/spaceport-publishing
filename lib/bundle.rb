@@ -59,7 +59,7 @@ def bundle
   end
 
   built_client_dir = File.join(output_dir, "built_client", "assets")
-  full_asset_list_path = File.join(output_dir, "full_asset_list.txt")
+  full_asset_list_path = File.join(built_client_dir, "full_asset_list.txt")
 
   FileUtils.rm_rf( built_client_dir )
   FileUtils.mkdir_p( built_client_dir )
@@ -69,12 +69,12 @@ def bundle
     puts `#{SPACEPORT_BIN_PATH} generate_manifest --config #{bundle_config_path} -a #{app_root_dir} --output #{built_client_dir}`
   end
 
-
   File.open( full_asset_list_path ) do |file|
     file.each do |line|
+      line.strip!
       dir = File.join(  built_client_dir, File.dirname( line ) )
       FileUtils.mkdir_p( dir )
-      FileUtils.cp( file, dir )
+      FileUtils.cp( File.join( File.expand_path(app_root_dir), line ), File.join( dir, line ) )
     end
   end
 
