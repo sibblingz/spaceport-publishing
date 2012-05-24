@@ -39,6 +39,8 @@ class TestThrowaray < Test::Unit::TestCase
     assert( File.exists?( File.join( path, "built_client", "assets", "goodfolder", "1.js" ) ) )
     assert( !File.exists?( File.join( path, "built_client", "assets", "badfolder" ) ) )
     
+    assert( File.exists?( File.join( path, "built_client", "assets", "manifest.xml" ) ) )
+    
     assert( !File.exists?( File.join( path, "built_client", "assets", "goodfolder", "badsubfolder" ) ) )
   end
 end
