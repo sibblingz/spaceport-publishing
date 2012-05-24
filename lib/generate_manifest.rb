@@ -91,8 +91,6 @@ def generate_manifest
 
 
   def get_version(filename, version_type)
-
-
     if ( version_type == 'svn')
       get_svn_revision( filename )
     elsif ( version_type == 'git')
@@ -105,7 +103,8 @@ def generate_manifest
   end
 
   file_list = file_list.map do |filename|
-    version = get_version( filename,  completeFileList[filename] )
+    #Always use md5
+    version = get_cksum( filename )
     if !version || version == ""
       puts "#{filename} is unversioned"
       nil    

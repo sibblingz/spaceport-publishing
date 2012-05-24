@@ -74,7 +74,7 @@ def bundle
       line.strip!
       dir = File.join(  built_client_dir, File.dirname( line ) )
       FileUtils.mkdir_p( dir )
-      FileUtils.cp( File.join( File.expand_path(app_root_dir), line ), File.join( dir, line ) )
+      FileUtils.cp( File.join( File.expand_path(app_root_dir), line ), File.join( dir, File.basename(line) ) )
     end
   end
 

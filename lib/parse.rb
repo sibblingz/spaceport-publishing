@@ -76,6 +76,6 @@ def parse( bundlePath )
   	end
   end
   
-  { wants: wants, doNotWants: doNotWants, plugins: plugins, app_root_dir: app_root_dir, output_dir: output_dir }
 
+  { :wants => wants, :doNotWants => doNotWants, :plugins => plugins, :app_root_dir => app_root_dir, :output_dir=> output_dir }
 end

@@ -11,7 +11,7 @@ class TestThrowaray < Test::Unit::TestCase
   end
   
   def teardown
-    #FileUtils.rm_r('tmp')
+    FileUtils.rm_r('tmp')
   end
   
   def test_something_for_real
@@ -28,12 +28,17 @@ class TestThrowaray < Test::Unit::TestCase
     app_root = "."
     bundle_config = File.join( path, "bundle.config" )
     
-    puts "bin/spaceport bundle --c #{bundle_config} -o #{app_root} -m #{app_root}"
-    puts `bin/spaceport bundle --c #{bundle_config} -o #{app_root} -m #{app_root}`
+    puts "bin/spaceport bundle --c #{bundle_config}"
+    puts `bin/spaceport bundle --c #{bundle_config}`
     
     assert( File.exists?( File.join( path, "built_client", "assets" ) ) )
     
     assert( File.exists?( File.join( path, "built_client", "assets", "human_male.png" ) ) )
     assert( File.exists?( File.join( path, "built_client", "assets", "human_female.png" ) ) )
+    assert( File.exists?( File.join( path, "built_client", "assets", "goodfolder", "1.js" ) ) )
+    assert( File.exists?( File.join( path, "built_client", "assets", "goodfolder", "1.js" ) ) )
+    assert( !File.exists?( File.join( path, "built_client", "assets", "badfolder" ) ) )
+    
+    assert( !File.exists?( File.join( path, "built_client", "assets", "goodfolder", "badsubfolder" ) ) )
   end
 end
