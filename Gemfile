@@ -9,4 +9,5 @@ group :development do
 	#I can't seem to build jeweler on windows, because I can't manage to build libxml-ruby, which one of these two depends on
  # because we don't use these on windows anyway ( we dont make a gem ) it does not matter
   gem "jeweler", :platform => "ruby"
+	gem "ocra"
 end
