@@ -43,7 +43,7 @@ def generate_manifest
   wants = parsedResults[:wants]
   doNotWants = parsedResults[:doNotWants]
   plugins = parsedResults[:plugins]
-  app_root_dir = app_root_dir || parsedResults[:app_root_dir]
+  app_root_dir = app_root_dir || File.join( File.dirname(bundlePath), parsedResults[:app_root_dir] )
   output_dir = output_dir || parsedResults[:output_dir]
   
 
@@ -55,7 +55,7 @@ def generate_manifest
   end
   
   original_dir = Dir.pwd
-  Dir.chdir( app_root_dir )
+  Dir.chdir(  app_root_dir )
 
   wants.each do |w|
   	Dir.glob( w[:path] ) do |filename|

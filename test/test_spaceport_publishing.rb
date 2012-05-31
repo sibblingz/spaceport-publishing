@@ -43,4 +43,12 @@ class TestThrowaray < Test::Unit::TestCase
     
     assert( !File.exists?( File.join( path, "built_client", "assets", "goodfolder", "badsubfolder" ) ) )
   end
+  
+  test can_manifest
+    path = "tmp/assets/test_app_1"    
+    app_root = "."
+    bundle_config = File.join( path, "bundle.config" )
+    
+    puts `bin/spaceport generate_manifest --c #{bundle_config}`  
+  end
 end
